@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical"
+    tools:context=".fragment.ChartFragment">
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart_line_chart"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"/>
+
+    <Spinner
+        android:id="@+id/chart_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/chart_line_chart"
+        android:background="@drawable/selector_for_custom_spinner"
+        android:popupBackground="@drawable/shape_for_custom_spinner" />
+</LinearLayout>

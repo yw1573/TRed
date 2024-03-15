@@ -1,0 +1,106 @@
+name: Build TRed After Push
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+    tags:
+        - 'v*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    # steps之间是串行的，前一个steps运行成功才会进入下一个steps如果某一个steps失败，整个action就会失败
+    # uses表示使用某个模板，with是传入模板的一些参数这些模板参数在marketplace的文档中找到
+    steps:
+      - name: Checkout
+        # https://github.com/actions/checkout/tree/v3/
+        # 这一步是基本上所有CI/CD流程必须的，把对应的代码从git仓库中检出，放到工作目录中
+        uses: actions/checkout@v4
+
+      - name: Set JDK 17
+        # https://github.com/actions/setup-java/tree/v3/
+        # 配置java环境，使用jdk17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+          cache: gradle
+
+      - name: Setup Gradle
+        # https://github.com/gradle/gradle-build-action/tree/v2/
+        # 使用gradle构建apk
+        # 这个默认是启用缓存的
+        uses: gradle/gradle-build-action@v3
+        with:
+          gradle-version: 8.2
+          arguments: assembleRelease
+
+      - name: Check Release File
+        # 检测apk文件
+        run: ls -la app/build/outputs/apk/release
+
+      - name: Check Zipalign File
+        # 检测签名工具路径
+        run: ls -la /usr/local/lib/android/sdk/build-tools/
+
+      - name: Sign Android APK
+        # APK签名
+        # https://github.com/r0adkll/sign-android-release/tree/v1/
+        uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          # 这里使用的是action的变量
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
+          alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        env:
+            BUILD_TOOLS_VERSION: "33.0.2"
+
+      - name: Move or Rename
+        # 修改名称并将其移到最外面
+        run: mv ${{steps.sign_app.outputs.signedReleaseFile}} TRed-Release.apk
+
+      - name: Check Signed File
+        run: ls -al
+        
+      - name: Commit 
+        uses: stefanzweifel/git-auto-commit-action@v5
+        if: ${{ ! startsWith(github.ref, 'refs/tags/') }}
+        with:
+          commit_message: "最终产物提交"
+          commit_options: "--no-verify"
+          file_pattern: "*.apk"
+          repository: .
+          commit_user_name: yw1573
+          commit_user_email: yw1573@yeah.net
+          commit_author: yw1573 <yw1573@yeah.net>
+          create_branch: false
+      
+      - name: Release
+        uses: ncipollo/release-action@v1
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        with:
+          artifacts: "*.apk"
+          token: ${{ github.token }}
+          generateReleaseNotes: true
+
+
+
+
+
+
+
+
+
+
+
+

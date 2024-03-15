@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">TRed</string>
+    <string name="string_enter">记录</string>
+    <string name="string_table">数据</string>
+    <string name="string_chart">图表</string>
+    <string name="string_setup">设置</string>
+    <string name="string_blood_sugar">血糖值</string>
+    <string name="string_delete">删除</string>
+    <string name="string_all">全部</string>
+    <string name="string_confirm">确认</string>
+    <string name="string_cancel">取消</string>
+
+    <string name="confirm_enter_information">确认记录信息</string>
+    <string name="confirm_clear_database">确认清空数据库</string>
+    <string name="message_clear_database">清空数据会将所有记录全部清空，保险起见先导出数据到手机，恢复时将其导入即可恢复</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical"
+    tools:context=".fragment.EnterFragment">
+
+    <com.loper7.date_time_picker.DateTimePicker
+        android:id="@+id/enter_date_time_picker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_one"
+        app:dt_dividerColor="#E5E5E5"
+        app:dt_normalTextSize="10sp"
+        app:dt_selectTextSize="12sp"
+        app:dt_selectedTextBold="true"
+        app:dt_showLabel="true"
+        app:dt_textColor="#666666"
+        app:dt_themeColor="@color/colorPrimary" />
+
+    <Spinner
+        android:id="@+id/enter_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/selector_for_custom_spinner"
+        android:popupBackground="@drawable/shape_for_custom_spinner" />
+
+    <EditText
+        android:id="@+id/enter_edt_blood_sugar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_one"
+        android:hint="@string/string_blood_sugar"
+        android:inputType="number|numberDecimal"
+        android:lines="1"
+        android:selectAllOnFocus="true"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/enter_btn_delete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_one"
+            android:text="@string/string_delete" />
+
+        <Button
+            android:id="@+id/enter_btn_enter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_one"
+            android:text="@string/string_enter" />
+    </LinearLayout>
+</LinearLayout>

@@ -9,7 +9,7 @@ TRed是一个糖尿病综合防治项目，目前该项目包含以下内容
 
 目前提供一个关于糖尿病知识库网站[中华糖尿病杂志](https://zhtnbzz.yiigle.com/)
 
-
+本项目的知识库[TRed-wiki](https://github.com/yw1573/TRed/wiki)
 
 ## 糖尿病诊断依据
 

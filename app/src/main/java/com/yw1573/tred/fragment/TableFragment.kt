@@ -17,9 +17,6 @@ import util.StringUtils
 class TableFragment : Fragment() {
 
     private var _binding: FragmentTableBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -29,12 +26,11 @@ class TableFragment : Fragment() {
     ): View {
         _binding = FragmentTableBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         val dbHelper = MainActivity.dbHelper
-        val bloodSugarList = dbHelper?.query()
+        val bloodSugarList = dbHelper!!.query(false)
         val recyclerViewMovieList = binding.tableRecyclerView
         recyclerViewMovieList.layoutManager = LinearLayoutManager(requireActivity())
-        recyclerViewMovieList.adapter = bloodSugarList?.let { TableViewAdapter(it) }
+        recyclerViewMovieList.adapter = TableViewAdapter(bloodSugarList)
         return root
     }
 
@@ -68,8 +64,6 @@ class TableFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: RowViewHolder, position: Int) {
-            // val rowPos = holder.adapterPosition
-            // 上面的写法已经弃用
             val rowPos = holder.bindingAdapterPosition
 
             if (rowPos == 0) {

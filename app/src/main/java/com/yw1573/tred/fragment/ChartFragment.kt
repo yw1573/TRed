@@ -31,11 +31,7 @@ class ChartFragment : Fragment() {
     private var phaseStr = MainActivity.phaseStr
     private var lineChartView: LineChart? = null
     private var spinnerChart: Spinner? = null
-
     private var _binding: FragmentChartBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(

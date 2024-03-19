@@ -13,21 +13,12 @@ const val BS_TABLE_NAME = "BloodSugars"
 const val PS_TABLE_NAME = "PhaseString"
 
 // 血糖数据以及数据库
-class BloodSugar {
-    var id: Int = 0
-    var timestamp: Long = 0
-    var phase: String = ""
+data class BloodSugar(
+    var id: Int = 0,
+    var timestamp: Long = 0,
+    var phase: String = "",
     var value: Float = 0.0f
-
-    constructor(id: Int, timestamp: Long, phase: String, value: Float) {
-        this.id = id
-        this.timestamp = timestamp
-        this.phase = phase
-        this.value = value
-    }
-
-    constructor()
-}
+)
 
 class DatabaseHelper(private val context: Context) {
     companion object {

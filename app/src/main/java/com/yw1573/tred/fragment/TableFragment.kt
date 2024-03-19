@@ -13,7 +13,6 @@ import com.yw1573.tred.databinding.FragmentTableBinding
 import util.BloodSugar
 import util.StringUtils
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
@@ -25,7 +24,12 @@ import java.util.TimeZone
 // )
 
 data class DisplayData(
-    val id: Int, val date: String, val time: String, val phase: String, val value: String, val standard: String
+    val id: Int,
+    val date: String,
+    val time: String,
+    val phase: String,
+    val value: String,
+    val standard: String
 )
 
 
@@ -74,9 +78,57 @@ class TableFragment : Fragment() {
         for (bloodSugar in bloodSugars) {
             val date = StringUtils.conversionTime(bloodSugar.timestamp, "yyyy年MM月dd日")
             val time = StringUtils.conversionTime(bloodSugar.timestamp, "HH:mm")
+            var standard = "正常"
+            val v = bloodSugar.value
+            when (bloodSugar.phase) {
+                "空腹" -> {
+                    if (v > 6.1) {
+                        standard = "偏高"
+                    }
+                    if (v < 4.4) {
+                        standard = "偏低"
+                    }
+                }
+
+                "餐前" -> {
+                    if (v > 6.1) {
+                        standard = "偏高"
+                    }
+                    if (v < 4.4) {
+                        standard = "偏低"
+                    }
+                }
+
+                "餐后" -> {
+                    if (v > 7.2) {
+                        standard = "偏高"
+                    }
+                    if (v < 5.0) {
+                        standard = "偏低"
+                    }
+                }
+
+                "睡前" -> {
+                    if (v > 6.1) {
+                        standard = "偏高"
+                    }
+                    if (v < 4.4) {
+                        standard = "偏低"
+                    }
+                }
+
+                "随机" -> {
+                    if (v > 6.1) {
+                        standard = "偏高"
+                    }
+                    if (v < 4.4) {
+                        standard = "偏低"
+                    }
+                }
+            }
             bloodSugarMap.getOrPut(date) { mutableListOf() }.add(
                 DisplayData(
-                    bloodSugar.id, date, time, bloodSugar.phase, bloodSugar.value.toString(), ""
+                    bloodSugar.id, date, time, bloodSugar.phase, bloodSugar.value.toString(), standard
                 )
             )
         }

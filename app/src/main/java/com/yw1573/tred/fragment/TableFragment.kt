@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yw1573.tred.MainActivity
 import com.yw1573.tred.adapter.OuterAdapter
@@ -56,6 +57,7 @@ class TableFragment : Fragment() {
         Log.d("TRed", bloodSugarMap.size.toString())
         val adapter = OuterAdapter(bloodSugarMap, requireActivity())
         val rv = binding.rv
+        rv.addItemDecoration(DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL))
         rv.layoutManager = LinearLayoutManager(requireActivity())
         rv.adapter = adapter
     }

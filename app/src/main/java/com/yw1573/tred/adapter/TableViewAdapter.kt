@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yw1573.tred.databinding.TableListItemBinding
@@ -67,6 +68,7 @@ class OuterAdapter(private val bloodSugarMap: Map<String, List<DisplayData>>, pr
         init {
             binding.innerRv.layoutManager = LinearLayoutManager(context)
             binding.innerRv.adapter = innerAdapter
+            binding.innerRv.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
 
         fun bind(date: String, list: List<DisplayData>) {

@@ -41,7 +41,9 @@ android {
     dataBinding {
         enable = true
     }
-
+    viewBinding {
+        enable = true
+    }
 }
 
 dependencies {
@@ -70,6 +72,4 @@ dependencies {
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     // 版本更新库
     implementation("io.github.azhon:appupdate:4.3.2")
-    // BRVAH
-    implementation("io.github.cymchad:BaseRecyclerViewAdapterHelper4:4.1.4")
 }

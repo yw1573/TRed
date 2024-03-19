@@ -13,6 +13,8 @@ import util.SqliteDB
 
 private const val DB_VERSION = 1
 
+
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

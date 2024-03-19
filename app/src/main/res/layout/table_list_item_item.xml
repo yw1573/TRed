@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="top"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:gravity="center"
             android:text="@{bloodSugar.standard}" />
 
@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="top"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:gravity="center"
             android:text="@{bloodSugar.value + `mmol/L`}" />
 
@@ -38,7 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="top"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:gravity="center"
             android:text="@{bloodSugar.phase}" />
 
@@ -47,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="top"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:gravity="center"
             android:text="@{bloodSugar.time}" />
     </LinearLayout>

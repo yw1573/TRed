@@ -13,21 +13,12 @@ const val BS_TABLE_NAME = "BloodSugars"
 const val PS_TABLE_NAME = "PhaseString"
 
 // 血糖数据以及数据库
-class BloodSugar {
-    var id: Int = 0
-    var timestamp: Long = 0
-    var phase: String = ""
+data class BloodSugar(
+    var id: Int = 0,
+    var timestamp: Long = 0,
+    var phase: String = "",
     var value: Float = 0.0f
-
-    constructor(id: Int, timestamp: Long, phase: String, value: Float) {
-        this.id = id
-        this.timestamp = timestamp
-        this.phase = phase
-        this.value = value
-    }
-
-    constructor()
-}
+)
 
 class DatabaseHelper(private val context: Context) {
     companion object {
@@ -119,12 +110,19 @@ class SqliteDB(
      * @return List<BloodSugar>
      */
     @SuppressLint("Range", "Recycle")
-    fun query(): List<BloodSugar> {
+    fun query(order: Boolean): List<BloodSugar> {
         val list = mutableListOf<BloodSugar>()
         val db = this.readableDatabase
-        val query = """
-            SELECT * FROM $BS_TABLE_NAME
-             """.trimIndent()
+        val query = if (order) {
+            """
+                SELECT * FROM $BS_TABLE_NAME  ORDER BY timestamp ASC
+                 """.trimIndent()
+        } else {
+            """
+                SELECT * FROM $BS_TABLE_NAME  ORDER BY timestamp DESC
+                 """.trimIndent()
+        }
+
         val cursor = db.rawQuery(query, null)
         while (cursor.moveToNext()) {
             val bs = BloodSugar()
@@ -149,7 +147,7 @@ class SqliteDB(
         val db = this.readableDatabase
         val all = mContext.getString(R.string.string_all)
         if (phase == all) {
-            return this.query()
+            return this.query(true)
         } else {
             val sql = """
                 SELECT * FROM $BS_TABLE_NAME WHERE phase = ? ORDER BY timestamp ASC
@@ -235,7 +233,7 @@ class SqliteDB(
      */
     fun sqlExport(): List<String> {
         val list = mutableListOf<String>()
-        val bloodSugarList = this.query()
+        val bloodSugarList = this.query(true)
         for (bs in bloodSugarList) {
             val str =
                 "INSERT INTO BloodSugars (timestamp, phase, value) VALUES (${bs.timestamp}, '${bs.phase}', ${bs.value});"

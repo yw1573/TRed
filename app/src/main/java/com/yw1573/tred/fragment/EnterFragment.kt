@@ -28,11 +28,7 @@ import java.util.Calendar
 class EnterFragment : Fragment() {
 
     private var _binding: FragmentEnterBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-
     private var mPicker: DateTimePicker? = null
     private var mSpinner: Spinner? = null
     private var mEdtBloodSugar: EditText? = null

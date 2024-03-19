@@ -9,26 +9,41 @@ TRed是一个糖尿病综合防治项目，目前该项目包含以下内容
 
 目前提供一个关于糖尿病知识库网站[中华糖尿病杂志](https://zhtnbzz.yiigle.com/)
 
-本项目的知识库[TRed-wiki](https://github.com/yw1573/TRed/wiki)
+## TRed-wiki-糖尿病知识库
 
-## 糖尿病诊断依据
+### 糖尿病诊断相关标准
+
+这些知识一般来自于[中国2型糖尿病防治指南-2020年版](assets/中国2型糖尿病防治指南-2020年版.pdf)这个文档
+
+糖尿病按照病因分为T1DM、T2DM、特殊类型糖尿病和妊娠期糖尿病4种类型
 
 
 <details>
 <summary><b>&nbsp;糖代谢状态分类</b></summary>
 <br/>
-<img src="https://github.com/yw1573/TRed/raw/master/assets/%E7%B3%96%E4%BB%A3%E8%B0%A2%E7%8A%B6%E6%80%81%E5%88%86%E7%B1%BB.png"/>
+<img src="assets/糖代谢状态分类.png"/>
 </details>
 
 <details>
 <summary><b>&nbsp;糖尿病的诊断标准</b></summary>
 <br/>
-<img src="https://github.com/yw1573/TRed/raw/master/assets/%E7%B3%96%E5%B0%BF%E7%97%85%E7%9A%84%E8%AF%8A%E6%96%AD%E6%A0%87%E5%87%86.png"/>
+<img src="assets/糖尿病的诊断标准.png"/>
+</details>
+如果空腹血糖>=6.1mmol/L或者随机血糖>=7.8mmol/L，建议行OGTT(糖耐量测试)
+
+<details>
+<summary><b>&nbsp;2型糖尿病患者常见检查的推荐频率</b></summary>
+<br/>
+<img src="assets/2型糖尿病患者常见检查的推荐频率.png"/>
 </details>
 
 
+[中国2型糖尿病防治指南-2020年版.pdf](assets/中国2型糖尿病防治指南-2020年版.pdf)
 
-## 关于APP的构想
+
+
+
+## TRed-APP-糖尿病记录软件
 
 正如描述中所述，TRed记录血糖不需要登录，不需要联网(当然后面要加入自动更新的话，很难避免完全不联网，但我能做到的就是，`仅更新时联网`，其他的任何场景不联网)
 

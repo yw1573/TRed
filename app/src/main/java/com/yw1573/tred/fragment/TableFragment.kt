@@ -1,41 +1,59 @@
 package com.yw1573.tred.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.yw1573.tred.MainActivity
-import com.yw1573.tred.R
+import com.yw1573.tred.adapter.OuterAdapter
 import com.yw1573.tred.databinding.FragmentTableBinding
 import util.BloodSugar
 import util.StringUtils
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
+
+// data class BloodSugar(
+//     var id: Int = 0,
+//     var timestamp: Long = 0,
+//     var phase: String = "",
+//     var value: Float = 0.0f
+// )
+
+data class DisplayData(
+    val id: Int, val date: String, val time: String, val phase: String, val value: String, val standard: String
+)
+
 
 class TableFragment : Fragment() {
 
     private var _binding: FragmentTableBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+    private val dbHelper = MainActivity.dbHelper
+    private val bloodSugars = dbHelper!!.query(false)
+    private var bloodSugarMap: Map<String, List<DisplayData>> = mapOf()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTableBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val dbHelper = MainActivity.dbHelper
-        val bloodSugarList = dbHelper?.query()
-        val recyclerViewMovieList = binding.tableRecyclerView
-        recyclerViewMovieList.layoutManager = LinearLayoutManager(requireActivity())
-        recyclerViewMovieList.adapter = bloodSugarList?.let { TableViewAdapter(it) }
+        bloodSugarMap = bloodSugarNormalization(bloodSugars)
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d("TRed", bloodSugars.size.toString())
+        Log.d("TRed", bloodSugarMap.size.toString())
+        val adapter = OuterAdapter(bloodSugarMap, requireActivity())
+        val rv = binding.rv
+        rv.layoutManager = LinearLayoutManager(requireActivity())
+        rv.adapter = adapter
     }
 
     override fun onDestroyView() {
@@ -44,77 +62,26 @@ class TableFragment : Fragment() {
     }
 
     /**
-     * 适配器
-     * @property bloodSugarList List<BloodSugar>
-     * @property phaseStr Array<String>
-     * @constructor
+     * 对数据进行归一化处理
+     * @param bloodSugars List<BloodSugar>
+     * @return Map<String, List<BloodSugar>>
      */
-    class TableViewAdapter(private val bloodSugarList: List<BloodSugar>) :
-        RecyclerView.Adapter<TableViewAdapter.RowViewHolder>() {
-        private val phaseStr = MainActivity.phaseStr
+    private fun bloodSugarNormalization(bloodSugars: List<BloodSugar>): Map<String, List<DisplayData>> {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        dateFormat.timeZone = TimeZone.getTimeZone("Asia/Shanghai")
+        val bloodSugarMap = mutableMapOf<String, MutableList<DisplayData>>()
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RowViewHolder {
-            val itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.table_list_item, parent, false)
-            return RowViewHolder(itemView)
+        for (bloodSugar in bloodSugars) {
+            val date = StringUtils.conversionTime(bloodSugar.timestamp, "yyyy年MM月dd日")
+            val time = StringUtils.conversionTime(bloodSugar.timestamp, "HH:mm")
+            bloodSugarMap.getOrPut(date) { mutableListOf() }.add(
+                DisplayData(
+                    bloodSugar.id, date, time, bloodSugar.phase, bloodSugar.value.toString(), ""
+                )
+            )
         }
-
-        private fun setHeaderBg(view: View) {
-            view.setBackgroundResource(R.drawable.bg_table_cell)
-        }
-
-        private fun setContentBg(view: View) {
-            view.setBackgroundResource(R.drawable.bg_table_cell)
-        }
-
-        override fun onBindViewHolder(holder: RowViewHolder, position: Int) {
-            // val rowPos = holder.adapterPosition
-            // 上面的写法已经弃用
-            val rowPos = holder.bindingAdapterPosition
-
-            if (rowPos == 0) {
-                // Header Cells. Main Headings appear here
-                holder.apply {
-                    setHeaderBg(txtID)
-                    setHeaderBg(txtDateTime)
-                    setHeaderBg(txtPhase)
-                    setHeaderBg(txtValue)
-
-                    txtID.text = "序号"
-                    txtDateTime.text = "时间"
-                    txtPhase.text = "阶段"
-                    txtValue.text = "血糖"
-                }
-            } else {
-                val modal = bloodSugarList[rowPos - 1]
-
-                holder.apply {
-                    setContentBg(txtID)
-                    setContentBg(txtDateTime)
-                    setContentBg(txtPhase)
-                    setContentBg(txtValue)
-
-                    txtID.text = modal.id.toString()
-                    txtDateTime.text =
-                        StringUtils.conversionTime(modal.timestamp, "yyyy年MM月dd日 HH:mm")
-                    txtPhase.text = modal.phase
-                    txtValue.text = modal.value.toString()
-                }
-            }
-        }
-
-        override fun getItemCount(): Int {
-            return bloodSugarList.size + 1 // one more to add header row
-        }
-
-        inner class RowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-            val txtID: TextView = itemView.findViewById(R.id.ViewTableID)
-            val txtDateTime: TextView = itemView.findViewById(R.id.ViewTableDateTime)
-            val txtPhase: TextView = itemView.findViewById(R.id.ViewTablePhase)
-            val txtValue: TextView = itemView.findViewById(R.id.ViewTableBloodSugar)
-        }
+        return bloodSugarMap
     }
-
 }
 
 

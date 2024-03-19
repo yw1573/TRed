@@ -1,43 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/ViewTableID"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="top"
-        android:layout_weight="2"
-        android:background="@drawable/bg_table_cell"
-        android:gravity="center" />
+    <data>
 
-    <TextView
-        android:id="@+id/ViewTableDateTime"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="top"
-        android:layout_weight="5"
-        android:background="@drawable/bg_table_cell"
-        android:gravity="center"/>
+        <import type="java.util.List" />
 
-    <TextView
-        android:id="@+id/ViewTablePhase"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="top"
-        android:layout_weight="2"
-        android:background="@drawable/bg_table_cell"
-        android:gravity="center" />
+        <import type="com.yw1573.tred.fragment.DisplayData" />
 
-    <TextView
-        android:id="@+id/ViewTableBloodSugar"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="top"
-        android:layout_weight="2"
-        android:background="@drawable/bg_table_cell"
-        android:gravity="center"/>
+        <variable
+            name="date"
+            type="String" />
 
-</LinearLayout>
+        <variable
+            name="bloodSugars"
+            type="List&lt;DisplayData>" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/ttv_date"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
+                android:layout_weight="2"
+                android:background="@drawable/bg_table_cell"
+                android:gravity="center"
+                android:text="@{date}" />
+
+            <TextView
+                android:id="@+id/ttv_frequency"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="top"
+                android:layout_weight="5"
+                android:background="@drawable/bg_table_cell"
+                android:gravity="center"
+                android:text="@{String.valueOf(bloodSugars.size())}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/innerRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

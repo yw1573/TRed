@@ -41,7 +41,9 @@ android {
     dataBinding {
         enable = true
     }
-
+    viewBinding {
+        enable = true
+    }
 }
 
 dependencies {
@@ -70,9 +72,4 @@ dependencies {
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     // 版本更新库
     implementation("io.github.azhon:appupdate:4.3.2")
-    // https://github.com/liangjingkanji/BRV
-    // Android 最强大的RecyclerView库, 比BRVAH更优雅和强大
-    implementation("com.github.liangjingkanji:BRV:1.5.8")
-
-
 }

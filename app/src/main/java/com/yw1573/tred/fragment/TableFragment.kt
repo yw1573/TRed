@@ -26,6 +26,7 @@ import java.util.TimeZone
 
 data class DisplayData(
     val id: Int,
+    val timestamp: Long,
     val date: String,
     val time: String,
     val phase: String,
@@ -53,8 +54,8 @@ class TableFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("TRed", bloodSugars.size.toString())
-        Log.d("TRed", bloodSugarMap.size.toString())
+        // Log.d("TRed", bloodSugars.size.toString())
+        // Log.d("TRed", bloodSugarMap.size.toString())
         val adapter = OuterAdapter(bloodSugarMap, requireActivity())
         val rv = binding.rv
         rv.layoutManager = LinearLayoutManager(requireActivity())
@@ -129,7 +130,8 @@ class TableFragment : Fragment() {
             }
             bloodSugarMap.getOrPut(date) { mutableListOf() }.add(
                 DisplayData(
-                    bloodSugar.id, date, time, bloodSugar.phase, bloodSugar.value.toString(), standard
+                    bloodSugar.id, bloodSugar.timestamp, date, time, bloodSugar.phase, bloodSugar.value.toString(),
+                    standard
                 )
             )
         }

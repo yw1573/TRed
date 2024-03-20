@@ -57,7 +57,6 @@ class TableFragment : Fragment() {
         Log.d("TRed", bloodSugarMap.size.toString())
         val adapter = OuterAdapter(bloodSugarMap, requireActivity())
         val rv = binding.rv
-        rv.addItemDecoration(DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL))
         rv.layoutManager = LinearLayoutManager(requireActivity())
         rv.adapter = adapter
     }

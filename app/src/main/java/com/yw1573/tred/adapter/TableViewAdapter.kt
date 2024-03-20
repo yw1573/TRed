@@ -30,7 +30,7 @@ interface OnItemLongClickListener {
 }
 
 class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
-    private var bloodSugars: List<DisplayData> = emptyList()
+    private var bloodSugars: MutableList<DisplayData> = mutableListOf()
     private lateinit var onItemClickListener: OnItemClickListener
     private lateinit var onItemLongClickListener: OnItemLongClickListener
 
@@ -46,7 +46,8 @@ class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
 
     @SuppressLint("NotifyDataSetChanged")
     fun setBloodSugars(list: List<DisplayData>) {
-        this.bloodSugars = list
+        // 虽然传参为不可变List，但是传入后用可变List接收，让可变List完成后续逻辑
+        this.bloodSugars = list.toMutableList()
         notifyDataSetChanged()
     }
 
@@ -63,8 +64,7 @@ class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
     override fun getItemCount(): Int = bloodSugars.size
 
     fun removeItem(position: Int) {
-        // 因为bloodSugars是List类型不可变，所有暂时逻辑中断
-        // this.bloodSugars.removeAt(position)
+        this.bloodSugars.removeAt(position)
         notifyItemRemoved(position)
     }
 

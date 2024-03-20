@@ -33,7 +33,6 @@ class EnterFragment : Fragment() {
     private var mSpinner: Spinner? = null
     private var mEdtBloodSugar: EditText? = null
     private var mBtnEnter: Button? = null
-    private var mBtnDelete: Button? = null
     private val dbHelper = MainActivity.dbHelper
     private val phaseStr = MainActivity.phaseStr
     override fun onCreateView(
@@ -71,7 +70,6 @@ class EnterFragment : Fragment() {
         mSpinner = binding.enterSpinner
         mEdtBloodSugar = binding.enterEdtBloodSugar
         mBtnEnter = binding.enterBtnEnter
-        mBtnDelete = binding.enterBtnDelete
 
         mPicker?.setDisplayType(
             intArrayOf(
@@ -112,21 +110,6 @@ class EnterFragment : Fragment() {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 Log.d("TRed", "不会走到这里")
-            }
-        }
-
-        // 监听删除按钮按下事件
-        mBtnDelete?.setOnClickListener {
-            MaterialDialog(requireActivity()).show {
-                icon(R.mipmap.icon)
-                input(hint = "输入删除的序号") { _, text ->
-                    dbHelper!!.delete(text.toString().toInt())
-                }
-                positiveButton(R.string.string_confirm) { }
-                negativeButton(R.string.string_cancel) { }
-
-                getActionButton(WhichButton.POSITIVE).updateTextColor(Color.BLACK)
-                getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.BLACK)
             }
         }
 

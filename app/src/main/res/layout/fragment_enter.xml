@@ -40,28 +40,11 @@
         android:lines="1"
         android:selectAllOnFocus="true"
         android:textColor="@color/black" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/enter_btn_delete"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_one"
-            android:text="@string/string_delete" />
-
         <Button
             android:id="@+id/enter_btn_enter"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_marginTop="20dp"
             android:background="@drawable/bg_one"
             android:text="@string/string_enter" />
-    </LinearLayout>
 </LinearLayout>

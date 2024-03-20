@@ -6,12 +6,11 @@
     android:padding="10dp"
     android:orientation="vertical"
     tools:context=".fragment.SetupFragment">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/setup_recycler_view_move_list"
+    <Button
+        android:id="@+id/setup_btn_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:nestedScrollingEnabled="false"
-        tools:listitem="@layout/setup_item"/>
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_one"
+        android:text="@string/string_update" />
 </LinearLayout>

@@ -9,8 +9,11 @@
     <string name="string_all">全部</string>
     <string name="string_confirm">确认</string>
     <string name="string_cancel">取消</string>
+    <string name="string_update">更新</string>
 
     <string name="confirm_enter_information">确认记录信息</string>
     <string name="confirm_deletion_message">确认删除信息</string>
+    <string name="confirm_to_update">确认更新信息</string>
+    <string name="update_tips">目前APP处理开发阶段，任何更新都将可能导致数据丢失，请谨慎选择！</string>
     <!-- TODO: Remove or change this placeholder text -->
 </resources>

@@ -84,7 +84,7 @@ class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
 
             binding.root.setOnLongClickListener {
                 onItemLongClickListener.onItemLongClick(
-                    bindingAdapterPosition ?: return@setOnLongClickListener false
+                    bindingAdapterPosition
                 )
             }
         }

@@ -13,6 +13,7 @@
 
     <string name="confirm_enter_information">确认记录信息</string>
     <string name="confirm_deletion_message">确认删除信息</string>
+    <string name="database_information">数据库信息展示</string>
     <string name="confirm_to_update">确认更新信息</string>
     <string name="update_tips">目前APP处理开发阶段，任何更新都将可能导致数据丢失，请谨慎选择！</string>
     <!-- TODO: Remove or change this placeholder text -->

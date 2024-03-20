@@ -2,19 +2,47 @@ package com.yw1573.tred.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.WhichButton
+import com.afollestad.materialdialogs.actions.getActionButton
+import com.yw1573.tred.MainActivity
+import com.yw1573.tred.R
 import com.yw1573.tred.databinding.TableItemBinding
 import com.yw1573.tred.databinding.TableItemItemBinding
 import com.yw1573.tred.fragment.DisplayData
+import util.StringUtils
 
+// 点击接口
+interface OnItemClickListener {
+    fun onItemClick(data: DisplayData)
+}
 
+// 长按接口
+interface OnItemLongClickListener {
+    fun onItemLongClick(position: Int): Boolean
+}
 
 class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
     private var bloodSugars: List<DisplayData> = emptyList()
+    private lateinit var onItemClickListener: OnItemClickListener
+    private lateinit var onItemLongClickListener: OnItemLongClickListener
+
+
+    // 监听接口
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.onItemClickListener = listener
+    }
+
+    fun setOnItemLongClickListener(listener: OnItemLongClickListener) {
+        this.onItemLongClickListener = listener
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     fun setBloodSugars(list: List<DisplayData>) {
@@ -25,7 +53,7 @@ class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = TableItemItemBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding)
+        return ViewHolder(binding, onItemClickListener, onItemLongClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -34,7 +62,33 @@ class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = bloodSugars.size
 
-    class ViewHolder(private val binding: TableItemItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun removeItem(position: Int) {
+        // 因为bloodSugars是List类型不可变，所有暂时逻辑中断
+        // this.bloodSugars.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    fun getItem(position: Int): DisplayData {
+        return bloodSugars[position]
+    }
+
+    class ViewHolder(
+        private val binding: TableItemItemBinding,
+        private val onItemClickListener: OnItemClickListener,
+        private val onItemLongClickListener: OnItemLongClickListener
+    ) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                onItemClickListener.onItemClick(binding.bloodSugar ?: return@setOnClickListener)
+            }
+
+            binding.root.setOnLongClickListener {
+                onItemLongClickListener.onItemLongClick(
+                    bindingAdapterPosition ?: return@setOnLongClickListener false
+                )
+            }
+        }
+
         fun bind(bloodSugar: DisplayData) {
             binding.bloodSugar = bloodSugar
             binding.executePendingBindings()
@@ -42,7 +96,10 @@ class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
     }
 }
 
-class OuterAdapter(private val bloodSugarMap: Map<String, List<DisplayData>>, private val context: Context) :
+class OuterAdapter(
+    private val bloodSugarMap: Map<String, List<DisplayData>>,
+    private val context: Context
+) :
     RecyclerView.Adapter<OuterAdapter.ViewHolder>() {
     private val keys = bloodSugarMap.keys.toList()
 
@@ -61,14 +118,64 @@ class OuterAdapter(private val bloodSugarMap: Map<String, List<DisplayData>>, pr
 
     override fun getItemCount(): Int = bloodSugarMap.size
 
-    class ViewHolder(private val binding: TableItemBinding, private val context: Context) : RecyclerView.ViewHolder
-        (binding.root) {
+    class ViewHolder(private val binding: TableItemBinding, private val context: Context) :
+        RecyclerView.ViewHolder
+            (binding.root) {
         private val innerAdapter = InnerAdapter()
 
         init {
+            // 点击事件
+            innerAdapter.setOnItemClickListener(object : OnItemClickListener {
+                override fun onItemClick(data: DisplayData) {
+                    Log.d("TRed", data.id.toString())
+                    MaterialDialog(context).show {
+                        icon(R.mipmap.icon)
+                        title(R.string.database_information)
+                        message(
+                            text = "序号: ${data.id}\n" +
+                                    "时间: ${data.date} ${data.time}\n"  +
+                                    "标签: ${data.phase}\n" +
+                                    "血糖: ${data.value}\n" +
+                                    "标准: ${data.standard}"
+                        )
+                    }
+                }
+            })
+            // 长按事件
+            innerAdapter.setOnItemLongClickListener(object : OnItemLongClickListener {
+                override fun onItemLongClick(position: Int): Boolean {
+                    val item = innerAdapter.getItem(position)
+                    MaterialDialog(context).show {
+                        icon(R.mipmap.icon)
+                        title(R.string.confirm_deletion_message)
+                        message(
+                            text = "序号: ${item.id}\n时间: " + StringUtils.conversionTime(
+                                item.timestamp, "yyyy年MM月dd日 HH:mm"
+                            ) + "\n" + "标签: " + item.phase + "\n" + "血糖: " + item.value
+                        )
+
+                        positiveButton(R.string.string_cancel) {
+                            Log.d("TRed", "取消删除操作")
+                        }
+                        negativeButton(R.string.string_confirm) {
+                            Log.d("TRed", "数据库删除成功: $position")
+                            MainActivity.dbHelper?.delete(item.id)
+                            innerAdapter.removeItem(position)
+                        }
+                        getActionButton(WhichButton.POSITIVE).updateTextColor(Color.BLACK)
+                        getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.BLACK)
+                    }
+                    return false
+                }
+            })
             binding.innerRv.layoutManager = LinearLayoutManager(context)
             binding.innerRv.adapter = innerAdapter
-            binding.innerRv.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            binding.innerRv.addItemDecoration(
+                DividerItemDecoration(
+                    context,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
         }
 
         fun bind(date: String, list: List<DisplayData>) {

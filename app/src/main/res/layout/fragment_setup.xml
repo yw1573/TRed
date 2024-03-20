@@ -13,5 +13,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:nestedScrollingEnabled="false"
-        tools:listitem="@layout/setup_list_item"/>
+        tools:listitem="@layout/setup_item"/>
 </LinearLayout>

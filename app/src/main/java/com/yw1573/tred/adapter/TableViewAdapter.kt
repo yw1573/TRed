@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.yw1573.tred.databinding.TableListItemBinding
-import com.yw1573.tred.databinding.TableListItemItemBinding
+import com.yw1573.tred.databinding.TableItemBinding
+import com.yw1573.tred.databinding.TableItemItemBinding
 import com.yw1573.tred.fragment.DisplayData
 
 
@@ -24,7 +24,7 @@ class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = TableListItemItemBinding.inflate(inflater, parent, false)
+        val binding = TableItemItemBinding.inflate(inflater, parent, false)
         return ViewHolder(binding)
     }
 
@@ -34,7 +34,7 @@ class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = bloodSugars.size
 
-    class ViewHolder(private val binding: TableListItemItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: TableItemItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(bloodSugar: DisplayData) {
             binding.bloodSugar = bloodSugar
             binding.executePendingBindings()
@@ -49,7 +49,7 @@ class OuterAdapter(private val bloodSugarMap: Map<String, List<DisplayData>>, pr
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OuterAdapter.ViewHolder {
         val inflater = LayoutInflater.from(context)
-        val binding = TableListItemBinding.inflate(inflater, parent, false)
+        val binding = TableItemBinding.inflate(inflater, parent, false)
         return ViewHolder(binding, context)
     }
 
@@ -61,7 +61,7 @@ class OuterAdapter(private val bloodSugarMap: Map<String, List<DisplayData>>, pr
 
     override fun getItemCount(): Int = bloodSugarMap.size
 
-    class ViewHolder(private val binding: TableListItemBinding, private val context: Context) : RecyclerView.ViewHolder
+    class ViewHolder(private val binding: TableItemBinding, private val context: Context) : RecyclerView.ViewHolder
         (binding.root) {
         private val innerAdapter = InnerAdapter()
 

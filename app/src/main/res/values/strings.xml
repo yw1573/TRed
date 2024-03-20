@@ -10,6 +10,8 @@
     <string name="string_confirm">确认</string>
     <string name="string_cancel">取消</string>
     <string name="string_update">更新</string>
+    <string name="string_export">导出</string>
+    <string name="string_import">导入</string>
 
     <string name="confirm_enter_information">确认记录信息</string>
     <string name="confirm_deletion_message">确认删除信息</string>

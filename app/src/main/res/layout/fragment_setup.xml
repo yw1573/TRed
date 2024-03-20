@@ -6,6 +6,31 @@
     android:padding="10dp"
     android:orientation="vertical"
     tools:context=".fragment.SetupFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/setup_btn_export"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_one"
+            android:text="@string/string_export" />
+
+        <Button
+            android:id="@+id/setup_btn_import"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_one"
+            android:text="@string/string_import" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/setup_btn_update"
         android:layout_width="match_parent"

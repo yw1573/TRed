@@ -4,8 +4,6 @@
 
     <data>
 
-        <import type="java.util.List" />
-
         <import type="com.yw1573.tred.fragment.DisplayData" />
 
         <variable
@@ -13,8 +11,8 @@
             type="String" />
 
         <variable
-            name="bloodSugars"
-            type="List&lt;DisplayData>" />
+            name="size"
+            type="String" />
     </data>
 
     <LinearLayout
@@ -43,7 +41,7 @@
                 android:layout_gravity="top"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="@{String.valueOf(bloodSugars.size())}" />
+                android:text="@{size}" />
         </LinearLayout>
 
         <View

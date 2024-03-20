@@ -73,7 +73,7 @@ class OuterAdapter(private val bloodSugarMap: Map<String, List<DisplayData>>, pr
 
         fun bind(date: String, list: List<DisplayData>) {
             binding.date = date
-            binding.bloodSugars = list
+            binding.size = list.size.toString()
             innerAdapter.setBloodSugars(list)
             binding.executePendingBindings()
         }

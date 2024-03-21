@@ -10,7 +10,7 @@ import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
 import androidx.fragment.app.Fragment
-import com.yw1573.tred.MainActivity
+import com.yw1573.tred.SplashActivity
 import com.yw1573.tred.R
 import com.yw1573.tred.databinding.FragmentSetupBinding
 import util.StringUtils
@@ -32,7 +32,7 @@ class SetupFragment : Fragment() {
         registerForActivityResult(CreateDocument("text/plain")) { uri: Uri? ->
             uri?.let {
                 Log.d("TRed", "sqlExportActivity-Uri: $uri")
-                val list = MainActivity.dbHelper!!.sqlExport()
+                val list = SplashActivity.dbHelper!!.sqlExport()
                 var content = ""
                 for (l in list) {
                     content += l
@@ -46,7 +46,7 @@ class SetupFragment : Fragment() {
             uri?.let {
                 Log.d("TRed", "sqlImportActivity-Uri: $uri")
                 val sqlList = readFile(uri)
-                MainActivity.dbHelper?.exec(sqlList)
+                SplashActivity.dbHelper?.exec(sqlList)
             }
         }
 

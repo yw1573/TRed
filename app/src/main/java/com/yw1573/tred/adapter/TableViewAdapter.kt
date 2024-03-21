@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
-import com.yw1573.tred.MainActivity
+import com.yw1573.tred.SplashActivity
 import com.yw1573.tred.R
 import com.yw1573.tred.databinding.TableItemBinding
 import com.yw1573.tred.databinding.TableItemItemBinding
@@ -159,7 +159,7 @@ class OuterAdapter(
                         }
                         negativeButton(R.string.string_confirm) {
                             Log.d("TRed", "数据库删除成功: $position")
-                            MainActivity.dbHelper?.delete(item.id)
+                            SplashActivity.dbHelper?.delete(item.id)
                             innerAdapter.removeItem(position)
                         }
                         getActionButton(WhichButton.POSITIVE).updateTextColor(Color.BLACK)

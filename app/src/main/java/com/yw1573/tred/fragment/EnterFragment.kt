@@ -17,7 +17,7 @@ import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
 import com.loper7.date_time_picker.DateTimeConfig
 import com.loper7.date_time_picker.DateTimePicker
-import com.yw1573.tred.MainActivity
+import com.yw1573.tred.SplashActivity
 import com.yw1573.tred.R
 import com.yw1573.tred.databinding.FragmentEnterBinding
 import util.BloodSugar
@@ -32,8 +32,8 @@ class EnterFragment : Fragment() {
     private var mSpinner: Spinner? = null
     private var mEdtBloodSugar: EditText? = null
     private var mBtnEnter: Button? = null
-    private val dbHelper = MainActivity.dbHelper
-    private val phaseStr = MainActivity.phaseStr
+    private val dbHelper = SplashActivity.dbHelper
+    private val phaseStr = SplashActivity.phaseStr
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

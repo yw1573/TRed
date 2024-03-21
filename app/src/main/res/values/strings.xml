@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">TRed</string>
     <string name="string_enter">记录</string>
-    <string name="string_table">数据</string>
-    <string name="string_chart">图表</string>
+    <string name="string_table">查询</string>
+    <string name="string_chart">统计</string>
     <string name="string_setup">设置</string>
     <string name="string_blood_sugar">血糖值</string>
     <string name="string_delete">删除</string>

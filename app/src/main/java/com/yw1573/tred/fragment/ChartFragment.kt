@@ -21,14 +21,14 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
-import com.yw1573.tred.MainActivity
+import com.yw1573.tred.SplashActivity
 import com.yw1573.tred.R
 import com.yw1573.tred.databinding.FragmentChartBinding
 import util.StringUtils
 
 class ChartFragment : Fragment() {
-    private val dbHelper = MainActivity.dbHelper
-    private var phaseStr = MainActivity.phaseStr
+    private val dbHelper = SplashActivity.dbHelper
+    private var phaseStr = SplashActivity.phaseStr
     private var lineChartView: LineChart? = null
     private var spinnerChart: Spinner? = null
     private var _binding: FragmentChartBinding? = null

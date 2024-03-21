@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.yw1573.tred.databinding.ActivityMainBinding
+import com.yw1573.tred.databinding.ActivitySplashBinding
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import util.SqliteDB
@@ -17,7 +17,7 @@ private const val DB_VERSION = 1
 
 class SplashActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivitySplashBinding
 
     companion object {
         @SuppressLint("StaticFieldLeak")
@@ -27,7 +27,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
         dbHelper = SqliteDB(this, DB_VERSION)
         phaseStr = dbHelper!!.queryPhaseStr()

@@ -1,6 +1,8 @@
 package com.yw1573.tred.fragment
 
+import android.content.Context
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,12 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yw1573.tred.SplashActivity
 import com.yw1573.tred.adapter.OuterAdapter
+import com.yw1573.tred.adapter.VerticalSpaceItemDecoration
 import com.yw1573.tred.databinding.FragmentTableBinding
 import util.BloodSugar
-import util.StringUtils
-import java.text.SimpleDateFormat
-import java.util.Locale
-import java.util.TimeZone
 
 
 data class DisplayData(
@@ -50,7 +49,10 @@ class TableFragment : Fragment() {
         adapter = OuterAdapter(requireActivity())
         bloodSugarMap = SplashActivity.dbHelper!!.bloodSugarNormalization()
         adapter.setBloodSugarMap(bloodSugarMap)
+
         val rv = binding.rv
+        val spaceInPx = requireActivity().dpToPx(10)
+        rv.addItemDecoration(VerticalSpaceItemDecoration(spaceInPx))
         rv.layoutManager = LinearLayoutManager(requireActivity())
         rv.adapter = adapter
     }
@@ -59,5 +61,12 @@ class TableFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 }
 
+fun Context.dpToPx(dp: Int): Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics
+    ).toInt()
+}

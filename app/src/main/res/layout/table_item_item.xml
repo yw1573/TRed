@@ -32,31 +32,26 @@
                 android:id="@+id/ttv_value"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_gravity="top"
-                android:gravity="top|start"
+                android:gravity="start|center_vertical"
                 android:text="@{bloodSugar.value + `mmol/L`}" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:gravity="start|center_vertical"
                 android:orientation="horizontal">
-
                 <TextView
                     android:id="@+id/ttv_standard"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="top"
                     android:layout_weight="1"
-                    android:gravity="bottom|start"
                     android:text="@{bloodSugar.standard}" />
 
                 <TextView
                     android:id="@+id/ttv_phase"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="top"
                     android:layout_weight="1"
-                    android:gravity="bottom|start"
                     android:text="@{bloodSugar.phase}" />
             </LinearLayout>
         </LinearLayout>
@@ -65,9 +60,9 @@
             android:id="@+id/ttv_time"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="top"
             android:layout_weight="2"
             android:gravity="center_vertical|end"
+            android:layout_marginEnd="10dp"
             android:text="@{bloodSugar.time}" />
     </LinearLayout>
 </layout>

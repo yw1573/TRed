@@ -3,6 +3,7 @@ package com.yw1573.tred.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Rect
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,7 +19,6 @@ import com.yw1573.tred.R
 import com.yw1573.tred.databinding.TableItemBinding
 import com.yw1573.tred.databinding.TableItemItemBinding
 import com.yw1573.tred.fragment.DisplayData
-import com.yw1573.tred.fragment.TableFragment
 import util.StringUtils
 
 // 点击接口
@@ -187,3 +187,10 @@ class OuterAdapter(
     }
 }
 
+class VerticalSpaceItemDecoration(private val verticalSpaceHeight: Int) : RecyclerView.ItemDecoration() {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        outRect.bottom = verticalSpaceHeight
+    }
+
+
+}

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -28,18 +29,16 @@
                 android:id="@+id/ttv_date"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="top"
                 android:layout_weight="1"
-                android:gravity="start"
+                android:gravity="start|center_vertical"
                 android:text="@{date}" />
 
             <TextView
                 android:id="@+id/ttv_frequency"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="top"
                 android:layout_weight="1"
-                android:gravity="end"
+                android:gravity="end|center_vertical"
                 android:text="@{size + `次`}" />
         </LinearLayout>
 
@@ -52,7 +51,9 @@
             android:id="@+id/innerRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#AAAAAAAA" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:background="@color/white" />
+
 
     </LinearLayout>
 </layout>

@@ -7,17 +7,18 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.yw1573.tred.R
+import com.yw1573.tred.fragment.DisplayData
 import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
 const val BS_TABLE_NAME = "BloodSugars"
 const val PS_TABLE_NAME = "PhaseString"
 
 // 血糖数据以及数据库
 data class BloodSugar(
-    var id: Int = 0,
-    var timestamp: Long = 0,
-    var phase: String = "",
-    var value: Float = 0.0f
+    var id: Int = 0, var timestamp: Long = 0, var phase: String = "", var value: Float = 0.0f
 )
 
 class DatabaseHelper(private val context: Context) {
@@ -262,4 +263,81 @@ class SqliteDB(
         return list
     }
 
+    /**
+     * 对数据进行归一化处理
+     * @param bloodSugars List<BloodSugar>
+     * @return Map<String, List<BloodSugar>>
+     */
+    fun bloodSugarNormalization(): Map<String, List<DisplayData>> {
+        val bloodSugars = this.query(true)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        dateFormat.timeZone = TimeZone.getTimeZone("Asia/Shanghai")
+        val bloodSugarMap = mutableMapOf<String, MutableList<DisplayData>>()
+
+        for (bloodSugar in bloodSugars) {
+            val date = StringUtils.conversionTime(bloodSugar.timestamp, "yyyy年MM月dd日")
+            val time = StringUtils.conversionTime(bloodSugar.timestamp, "HH:mm")
+            var standard = "正常"
+            val v = bloodSugar.value
+            when (bloodSugar.phase) {
+                "空腹" -> {
+                    if (v > 6.1) {
+                        standard = "偏高"
+                    }
+                    if (v < 4.4) {
+                        standard = "偏低"
+                    }
+                }
+
+                "餐前" -> {
+                    if (v > 6.1) {
+                        standard = "偏高"
+                    }
+                    if (v < 4.4) {
+                        standard = "偏低"
+                    }
+                }
+
+                "餐后" -> {
+                    if (v > 7.2) {
+                        standard = "偏高"
+                    }
+                    if (v < 5.0) {
+                        standard = "偏低"
+                    }
+                }
+
+                "睡前" -> {
+                    if (v > 6.1) {
+                        standard = "偏高"
+                    }
+                    if (v < 4.4) {
+                        standard = "偏低"
+                    }
+                }
+
+                "随机" -> {
+                    if (v > 6.1) {
+                        standard = "偏高"
+                    }
+                    if (v < 4.4) {
+                        standard = "偏低"
+                    }
+                }
+            }
+            bloodSugarMap.getOrPut(date) { mutableListOf() }.add(
+                DisplayData(
+                    bloodSugar.id,
+                    bloodSugar.timestamp,
+                    date,
+                    time,
+                    bloodSugar.phase,
+                    bloodSugar.value.toString(),
+                    standard
+                )
+            )
+        }
+        return bloodSugarMap
+    }
 }
+

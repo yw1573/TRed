@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,7 @@ import com.yw1573.tred.R
 import com.yw1573.tred.databinding.TableItemBinding
 import com.yw1573.tred.databinding.TableItemItemBinding
 import com.yw1573.tred.fragment.DisplayData
+import com.yw1573.tred.fragment.TableFragment
 import util.StringUtils
 
 // 点击接口
@@ -30,16 +32,17 @@ interface OnItemLongClickListener {
 }
 
 class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
-    private var bloodSugars: MutableList<DisplayData> = mutableListOf()
+    private lateinit var bloodSugars: MutableList<DisplayData>
     private lateinit var onItemClickListener: OnItemClickListener
     private lateinit var onItemLongClickListener: OnItemLongClickListener
 
 
-    // 监听接口
+    // 点击
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.onItemClickListener = listener
     }
 
+    // 长按
     fun setOnItemLongClickListener(listener: OnItemLongClickListener) {
         this.onItemLongClickListener = listener
     }
@@ -62,11 +65,6 @@ class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int = bloodSugars.size
-
-    fun removeItem(position: Int) {
-        this.bloodSugars.removeAt(position)
-        notifyItemRemoved(position)
-    }
 
     fun getItem(position: Int): DisplayData {
         return bloodSugars[position]
@@ -96,31 +94,37 @@ class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
     }
 }
 
+
 class OuterAdapter(
-    private val bloodSugarMap: Map<String, List<DisplayData>>,
     private val context: Context
-) :
-    RecyclerView.Adapter<OuterAdapter.ViewHolder>() {
-    private val keys = bloodSugarMap.keys.toList()
+) : RecyclerView.Adapter<OuterAdapter.ViewHolder>() {
+    private lateinit var bloodSugarMap: Map<String, List<DisplayData>>
+    private lateinit var keys: List<String>
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OuterAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(context)
         val binding = TableItemBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding, context)
+        return ViewHolder(binding, context, this@OuterAdapter)
     }
 
-    override fun onBindViewHolder(holder: OuterAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val date = keys[position]
         val list = bloodSugarMap[date] ?: emptyList()
         holder.bind(date, list)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun setBloodSugarMap(bloodSugarMap: Map<String, List<DisplayData>>) {
+        this.bloodSugarMap = bloodSugarMap
+        this.keys = bloodSugarMap.keys.toList()
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int = bloodSugarMap.size
 
-    class ViewHolder(private val binding: TableItemBinding, private val context: Context) :
-        RecyclerView.ViewHolder
-            (binding.root) {
+    class ViewHolder(
+        private val binding: TableItemBinding, private val context: Context, private val outerAdapter: OuterAdapter
+    ) : RecyclerView.ViewHolder(binding.root) {
         private val innerAdapter = InnerAdapter()
 
         init {
@@ -132,11 +136,7 @@ class OuterAdapter(
                         icon(R.mipmap.icon)
                         title(R.string.database_information)
                         message(
-                            text = "序号: ${data.id}\n" +
-                                    "时间: ${data.date} ${data.time}\n"  +
-                                    "标签: ${data.phase}\n" +
-                                    "血糖: ${data.value}\n" +
-                                    "标准: ${data.standard}"
+                            text = "序号: ${data.id}\n" + "时间: ${data.date} ${data.time}\n" + "标签: ${data.phase}\n" + "血糖: ${data.value}\n" + "标准: ${data.standard}"
                         )
                     }
                 }
@@ -160,7 +160,8 @@ class OuterAdapter(
                         negativeButton(R.string.string_confirm) {
                             Log.d("TRed", "数据库删除成功: $position")
                             SplashActivity.dbHelper?.delete(item.id)
-                            innerAdapter.removeItem(position)
+                            val bloodSugarMap = SplashActivity.dbHelper!!.bloodSugarNormalization()
+                            outerAdapter.setBloodSugarMap(bloodSugarMap)
                         }
                         getActionButton(WhichButton.POSITIVE).updateTextColor(Color.BLACK)
                         getActionButton(WhichButton.NEGATIVE).updateTextColor(Color.BLACK)
@@ -172,8 +173,7 @@ class OuterAdapter(
             binding.innerRv.adapter = innerAdapter
             binding.innerRv.addItemDecoration(
                 DividerItemDecoration(
-                    context,
-                    DividerItemDecoration.VERTICAL
+                    context, DividerItemDecoration.VERTICAL
                 )
             )
         }

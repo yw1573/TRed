@@ -16,9 +16,9 @@ import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
 import com.yw1573.tred.SplashActivity
 import com.yw1573.tred.R
+import com.yw1573.tred.data.DisplayData
 import com.yw1573.tred.databinding.TableItemBinding
 import com.yw1573.tred.databinding.TableItemItemBinding
-import com.yw1573.tred.fragment.DisplayData
 import util.StringUtils
 
 // 点击接口
@@ -31,6 +31,7 @@ interface OnItemLongClickListener {
     fun onItemLongClick(position: Int): Boolean
 }
 
+// 嵌套的RecyclerView
 class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
     private lateinit var bloodSugars: MutableList<DisplayData>
     private lateinit var onItemClickListener: OnItemClickListener
@@ -95,6 +96,7 @@ class InnerAdapter : RecyclerView.Adapter<InnerAdapter.ViewHolder>() {
 }
 
 
+// 外层的RecyclerView
 class OuterAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<OuterAdapter.ViewHolder>() {
@@ -159,6 +161,8 @@ class OuterAdapter(
                         }
                         negativeButton(R.string.string_confirm) {
                             Log.d("TRed", "数据库删除成功: $position")
+                            // 删除数据后要进行重新获取数据，目前数据量小
+                            // 暂时使用重查库的方式，理论上百万数据以下，性能带来的影响几乎可以忽略
                             SplashActivity.dbHelper?.delete(item.id)
                             val bloodSugarMap = SplashActivity.dbHelper!!.bloodSugarNormalization()
                             outerAdapter.setBloodSugarMap(bloodSugarMap)

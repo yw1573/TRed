@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.yw1573.tred.R
-import com.yw1573.tred.fragment.DisplayData
+import com.yw1573.tred.data.DisplayData
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -265,11 +265,11 @@ class SqliteDB(
 
     /**
      * 对数据进行归一化处理
-     * @param bloodSugars List<BloodSugar>
-     * @return Map<String, List<BloodSugar>>
+     * @return Map<String, List<DisplayData>>
      */
     fun bloodSugarNormalization(): Map<String, List<DisplayData>> {
-        val bloodSugars = this.query(true)
+        // 倒序方式查询，最先显示的为最近的数据
+        val bloodSugars = this.query(false)
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         dateFormat.timeZone = TimeZone.getTimeZone("Asia/Shanghai")
         val bloodSugarMap = mutableMapOf<String, MutableList<DisplayData>>()

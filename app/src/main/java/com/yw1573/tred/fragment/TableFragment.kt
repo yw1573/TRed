@@ -12,26 +12,13 @@ import com.yw1573.tred.SplashActivity
 import com.yw1573.tred.adapter.OuterAdapter
 import com.yw1573.tred.adapter.VerticalSpaceItemDecoration
 import com.yw1573.tred.databinding.FragmentTableBinding
-import util.BloodSugar
-
-
-data class DisplayData(
-    val id: Int,
-    val timestamp: Long,
-    val date: String,
-    val time: String,
-    val phase: String,
-    val value: String,
-    val standard: String
-)
+import com.yw1573.tred.data.DisplayData
 
 
 class TableFragment : Fragment() {
 
     private var _binding: FragmentTableBinding? = null
     private val binding get() = _binding!!
-    private val dbHelper = SplashActivity.dbHelper
-    private lateinit var bloodSugars: List<BloodSugar>
     private lateinit var bloodSugarMap: Map<String, List<DisplayData>>
     private lateinit var adapter: OuterAdapter
 
@@ -39,9 +26,8 @@ class TableFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTableBinding.inflate(inflater, container, false)
-        val root: View = binding.root
 
-        return root
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

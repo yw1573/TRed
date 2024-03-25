@@ -4,7 +4,7 @@
 
     <data>
 
-        <import type="com.yw1573.tred.fragment.DisplayData" />
+        <import type="com.yw1573.tred.data.DisplayData" />
 
         <variable
             name="date"
